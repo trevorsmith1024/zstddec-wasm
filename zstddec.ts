@@ -33,25 +33,12 @@ export class ZSTDDecoder {
 	init (): Promise<void> {
 
 		if ( init ) return init;
-
-		if ( typeof fetch !== 'undefined' ) {
-
 			// Web.
 
-			init = fetch( 'data:application/wasm;base64,' + wasm )
-				.then( ( response ) => response.arrayBuffer() )
-				.then( ( arrayBuffer ) => WebAssembly.instantiate( arrayBuffer, IMPORT_OBJECT ) )
-				.then( this._init );
-
-		} else {
-
-			// Node.js.
-
-			init = WebAssembly
-				.instantiate( Buffer.from( wasm, 'base64' ), IMPORT_OBJECT )
-				.then( this._init );
-
-		}
+		init = fetch( 'data:application/wasm;base64,' + wasm )
+			.then( ( response ) => response.arrayBuffer() )
+			.then( ( arrayBuffer ) => WebAssembly.instantiate( arrayBuffer, IMPORT_OBJECT ) )
+			.then( this._init );
 
 		return init;
 
